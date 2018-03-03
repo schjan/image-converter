@@ -1,0 +1,12 @@
+[[constraint]]
+  branch = "master"
+  name = "github.com/muesli/smartcrop"
+
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "^0.8.0"
+
+[prune]
+  go-tests = true
+  unused-packages = true
+  non-go = true
