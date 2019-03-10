@@ -2,57 +2,77 @@
 
 
 [[projects]]
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
-  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
-  version = "v1.1.0"
+  pruneopts = "NUT"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:3d845e9c4efb4dd7222da6fb9d1783317341a32dd8972c6a6cf4dd1fad5095df"
   name = "github.com/muesli/smartcrop"
   packages = [
     ".",
     "nfnt",
-    "options"
+    "options",
   ]
-  revision = "f6ebaa786a12a0fdb2d7c6dee72808e68c296464"
+  pruneopts = "NUT"
+  revision = "548bbf0c0965feac4997e1b51c96764f30dba677"
 
 [[projects]]
   branch = "master"
+  digest = "1:65052ea0d82c4c8da6bb6dc21396f2f3d17857f86536ea1c88e271bd98ffeeaa"
   name = "github.com/nfnt/resize"
   packages = ["."]
+  pruneopts = "NUT"
   revision = "83c6a9932646f83e3267f353373d47347b6036b2"
 
 [[projects]]
+  digest = "1:14715f705ff5dfe0ffd6571d7d201dd8e921030f8070321a79380d8ca4ec1a24"
   name = "github.com/pkg/errors"
   packages = ["."]
-  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
-  version = "v0.8.0"
+  pruneopts = "NUT"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = "NUT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:42e8c2456d7ec0f31e182c20022e74324c4da2cb3bd9069ff9b131fe33466308"
   name = "github.com/stretchr/testify"
   packages = ["assert"]
-  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
-  version = "v1.2.1"
+  pruneopts = "NUT"
+  revision = "ffdc059bfe9ce6a4e144ba849dbedead332c6053"
+  version = "v1.3.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:f6ecdeceb64e02dcbfde0a26562e7fabe97988843e57c2fe314cf3f8e038a641"
   name = "golang.org/x/image"
   packages = [
     "draw",
-    "math/f64"
+    "math/f64",
   ]
-  revision = "12117c17ca67ffa1ce22e9409f3b0b0a93ac08c7"
+  pruneopts = "NUT"
+  revision = "0694c2d4d067f97ebef574d63a763ee8ab559da7"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a781f7cb09023d6addb910e5958aa1cdc6dfbe143059c227ec247cdb44cf1706"
+  input-imports = [
+    "github.com/muesli/smartcrop",
+    "github.com/muesli/smartcrop/nfnt",
+    "github.com/muesli/smartcrop/options",
+    "github.com/pkg/errors",
+    "github.com/stretchr/testify/assert",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
