@@ -1,6 +1,6 @@
 # Image Converter [![Build Status](https://travis-ci.org/schjan/image-converter.svg?branch=master)](https://travis-ci.org/schjan/image-converter)
 
-Example code for my _Java on the Go - Go als Hilfsmittel für den Java-Veteranen_ talk at JavaLand 2018.
+Example code for my _Go as a Tooling Language for the Cloud_ talk at DevOps Gathering 2019.
 
 To install or update run `go get -u github.com/schjan/image-converter/...` after that `image-converter` command is available
 from bash / cmd.
