@@ -51,6 +51,23 @@ func (p *processor) AddToQueue(sourcePath string, destinationPath string) error 
 	return nil
 }
 
+func (p *processor) worker() {
+	for {
+		job, ok := <-p.jobChan
+		if !ok {
+			p.stoppedChan <- struct{}{}
+			return
+		}
+
+		err := p.processJob(job)
+		if err != nil {
+			log.Printf("Error processing image %v", job.sourcePath)
+		} else {
+			log.Printf("Successfull processed image %v", job.sourcePath)
+		}
+	}
+}
+
 func (p *processor) processJob(job jobOptions) error {
 	file, err := os.Open(job.sourcePath)
 	if err != nil {
@@ -112,22 +129,5 @@ func (p *processor) StopAndWaitFinished() {
 	for workersStopped != p.workerCount {
 		<-p.stoppedChan
 		workersStopped++
-	}
-}
-
-func (p *processor) worker() {
-	for {
-		job, ok := <-p.jobChan
-		if !ok {
-			p.stoppedChan <- struct{}{}
-			return
-		}
-
-		err := p.processJob(job)
-		if err != nil {
-			log.Printf("Error processing image %v", job.sourcePath)
-		} else {
-			log.Printf("Successfull processed image %v", job.sourcePath)
-		}
 	}
 }

@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - "1.10.x"
+  - "1.12.x"
 
 # set to true to disable default go get -t ./... because all our dependencies are already at /vendor
 install: true
