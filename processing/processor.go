@@ -42,13 +42,11 @@ func New(cropper crop.Cropper, workers int) (*processor, error) {
 	return p, nil
 }
 
-func (p *processor) AddToQueue(sourcePath string, destinationPath string) error {
+func (p *processor) AddToQueue(sourcePath string, destinationPath string) {
 	p.jobChan <- jobOptions{
 		sourcePath: sourcePath,
 		outputPath: destinationPath,
 	}
-
-	return nil
 }
 
 func (p *processor) worker() {
@@ -86,6 +84,7 @@ func (p *processor) processJob(job jobOptions) error {
 		return errors.Wrapf(err, "could not create file: %s", job.outputPath)
 	}
 	defer outFile.Close()
+
 
 	err = p.processImage(outFile, file)
 	if err != nil {
