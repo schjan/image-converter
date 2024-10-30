@@ -2,7 +2,7 @@
 
 Example code for my _Go as a Tooling Language for the Cloud_ talk at DevOps Gathering 2019.
 
-To install or update run `go get -u github.com/schjan/image-converter/...` after that `image-converter` command is available
+To install or update run `go install github.com/schjan/image-converter/cmd/image-converter` after that `image-converter` command is available
 from bash / cmd.
 
 
