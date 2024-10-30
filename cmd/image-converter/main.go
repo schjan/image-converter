@@ -23,9 +23,16 @@ var smartCropper = flag.Bool("smart", false, "if set use smart cropper")
 func main() {
 	flag.Parse()
 
+	if err := mainErr(); err != nil {
+		log.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func mainErr() error {
 	sourceFiles, err := imagesInDir(*sourceDirectory)
 	if err != nil {
-		log.Fatalf("Error reading source directory %v: %v", sourceDirectory, err)
+		return fmt.Errorf("could not read source directory %s: %w", *sourceDirectory, err)
 	}
 
 	// choose which implementation of Cropper to use with -smart flag
@@ -39,7 +46,7 @@ func main() {
 
 	processor, err := processing.New(cropper, runtime.NumCPU())
 	if err != nil {
-		log.Fatalf("Error creating image processor: %v", err)
+		return fmt.Errorf("could not create image processor: %w", err)
 	}
 
 	for _, srcFilename := range sourceFiles {
@@ -49,6 +56,8 @@ func main() {
 	}
 
 	processor.StopAndWaitFinished()
+
+	return nil
 }
 
 var supportedExtensions = []string{".png", ".jpg", ".jpeg"}
