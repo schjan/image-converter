@@ -13,7 +13,7 @@ import (
 	"github.com/schjan/image-converter/processing/crop"
 )
 
-type processor struct {
+type Processor struct {
 	cropper     crop.Cropper
 	jobChan     chan jobOptions
 	stoppedChan chan struct{}
@@ -25,12 +25,12 @@ type jobOptions struct {
 	outputPath string
 }
 
-func New(cropper crop.Cropper, workers int) (*processor, error) {
+func New(cropper crop.Cropper, workers int) (*Processor, error) {
 	if workers == 0 || workers > 20 {
 		return nil, errors.New("invalid number of workers")
 	}
 
-	p := &processor{
+	p := &Processor{
 		jobChan:     make(chan jobOptions, 40),
 		stoppedChan: make(chan struct{}),
 		cropper:     cropper,
@@ -44,14 +44,14 @@ func New(cropper crop.Cropper, workers int) (*processor, error) {
 	return p, nil
 }
 
-func (p *processor) AddToQueue(sourcePath string, destinationPath string) {
+func (p *Processor) AddToQueue(sourcePath string, destinationPath string) {
 	p.jobChan <- jobOptions{
 		sourcePath: sourcePath,
 		outputPath: destinationPath,
 	}
 }
 
-func (p *processor) worker() {
+func (p *Processor) worker() {
 	for {
 		job, ok := <-p.jobChan
 		if !ok {
@@ -68,7 +68,7 @@ func (p *processor) worker() {
 	}
 }
 
-func (p *processor) processJob(job jobOptions) error {
+func (p *Processor) processJob(job jobOptions) error {
 	file, err := os.Open(job.sourcePath)
 	if err != nil {
 		return err
@@ -101,7 +101,7 @@ func (p *processor) processJob(job jobOptions) error {
 	return nil
 }
 
-func (p *processor) processImage(writer io.Writer, reader io.Reader) error {
+func (p *Processor) processImage(writer io.Writer, reader io.Reader) error {
 	img, _, err := image.Decode(reader)
 	if err != nil {
 		return err
@@ -120,7 +120,7 @@ func (p *processor) processImage(writer io.Writer, reader io.Reader) error {
 	return nil
 }
 
-func (p *processor) StopAndWaitFinished() {
+func (p *Processor) StopAndWaitFinished() {
 	// closes the channel after the last item is received
 	close(p.jobChan)
 
