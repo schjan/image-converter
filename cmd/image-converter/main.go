@@ -79,11 +79,11 @@ func imagesInDir(directory string) ([]string, error) {
 			files = append(files, path.Join(directory, fileInfo.Name()))
 		}
 		// Before slices package:
-		// for _, supportedExt := range supportedExtensions {
-		// 	 if ext == supportedExt {
+		//for _, supportedExt := range supportedExtensions {
+		//	 if ext == supportedExt {
 		//		 files = append(files, path.Join(directory, fileInfo.Name()))
 		//	 }
-		// }
+		//}
 	}
 
 	return files, nil
