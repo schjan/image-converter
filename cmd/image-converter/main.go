@@ -2,14 +2,15 @@ package main
 
 import (
 	"flag"
-	"github.com/schjan/image-converter/processing"
-	"github.com/schjan/image-converter/processing/crop"
 	"io/ioutil"
 	"log"
 	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/schjan/image-converter/processing"
+	"github.com/schjan/image-converter/processing/crop"
 )
 
 // see explanation of flags with -help flag

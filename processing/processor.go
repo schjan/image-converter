@@ -1,14 +1,16 @@
 package processing
 
 import (
-	"github.com/pkg/errors"
-	"github.com/schjan/image-converter/processing/crop"
+	"errors"
+	"fmt"
 	"image"
 	"image/png"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/schjan/image-converter/processing/crop"
 )
 
 type processor struct {
@@ -76,25 +78,24 @@ func (p *processor) processJob(job jobOptions) error {
 	// first try to create output directory, there won't be an error if directory already exists
 	err = os.MkdirAll(filepath.Dir(job.outputPath), os.ModePerm)
 	if err != nil {
-		return errors.Wrapf(err, "could not create path structure for destination file: %s", job.outputPath)
+		return fmt.Errorf("could not create path structure for destination file '%s': %w", job.outputPath, err)
 	}
 
 	outFile, err := os.Create(job.outputPath)
 	if err != nil {
-		return errors.Wrapf(err, "could not create file: %s", job.outputPath)
+		return fmt.Errorf("could not create file '%s': %w", job.outputPath, err)
 	}
 	defer outFile.Close()
 
-
 	err = p.processImage(outFile, file)
 	if err != nil {
-		return errors.Wrapf(err, "converting %v failed", job.sourcePath)
+		return fmt.Errorf("converting '%s' failed: %w", job.sourcePath, err)
 	}
 
 	// with defer outFile.Close() we can't see any errors created while flushing buffers etc.
 	err = outFile.Close()
 	if err != nil {
-		return errors.Wrapf(err, "error saving file %v", job.outputPath)
+		return fmt.Errorf("error saving file '%s': %w", job.outputPath, err)
 	}
 
 	return nil

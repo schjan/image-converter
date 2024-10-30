@@ -1,10 +1,11 @@
 package crop
 
 import (
-	"github.com/stretchr/testify/assert"
 	"image"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSimpleCropperImageSize(t *testing.T) {

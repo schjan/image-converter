@@ -6,7 +6,6 @@ toolchain go1.23.2
 
 require (
 	github.com/muesli/smartcrop v0.3.0
-	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.9.0
 )
 
