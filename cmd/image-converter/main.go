@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"io/ioutil"
 	"log"
+	"os"
 	"path"
 	"path/filepath"
 	"runtime"
@@ -52,7 +52,7 @@ func main() {
 var supportedExtensions = []string{".png", ".jpg", ".jpeg"}
 
 func imagesInDir(directory string) ([]string, error) {
-	dirFiles, err := ioutil.ReadDir(directory)
+	dirFiles, err := os.ReadDir(directory)
 
 	var files []string
 

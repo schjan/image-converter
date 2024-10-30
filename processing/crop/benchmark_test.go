@@ -3,7 +3,7 @@ package crop
 import (
 	"bytes"
 	"image"
-	"io/ioutil"
+	"io"
 	"os"
 	"testing"
 )
@@ -17,7 +17,7 @@ func BenchmarkCroppers(b *testing.B) {
 	}
 	defer file.Close()
 
-	bts, err := ioutil.ReadAll(file)
+	bts, err := io.ReadAll(file)
 	if err != nil {
 		b.Fatal(err)
 	}
