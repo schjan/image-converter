@@ -7,6 +7,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 
 	"github.com/schjan/image-converter/processing"
@@ -28,7 +29,7 @@ func main() {
 
 	// choose which implementation of Cropper to use with -smart flag
 	var cropper crop.Cropper
-	if *smartCropper == true {
+	if *smartCropper {
 		log.Print("This software uses advanced cropping technologies 💥")
 		cropper = crop.NewSmart()
 	} else {
@@ -62,11 +63,15 @@ func imagesInDir(directory string) ([]string, error) {
 		}
 
 		ext := filepath.Ext(fileInfo.Name())
-		for _, supportedExt := range supportedExtensions {
-			if ext == supportedExt {
-				files = append(files, path.Join(directory, fileInfo.Name()))
-			}
+		if slices.Contains(supportedExtensions, ext) {
+			files = append(files, path.Join(directory, fileInfo.Name()))
 		}
+		// Before slices package:
+		// for _, supportedExt := range supportedExtensions {
+		// 	 if ext == supportedExt {
+		//		 files = append(files, path.Join(directory, fileInfo.Name()))
+		//	 }
+		// }
 	}
 
 	return files, err
