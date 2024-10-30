@@ -3,7 +3,6 @@ package crop
 import (
 	"bytes"
 	"image"
-	"io"
 	"os"
 	"testing"
 )
@@ -11,13 +10,7 @@ import (
 var result image.Image
 
 func BenchmarkCroppers(b *testing.B) {
-	file, err := os.Open("./../../assets/snow-1920.jpg")
-	if err != nil {
-		b.Fatal(err)
-	}
-	defer file.Close()
-
-	bts, err := io.ReadAll(file)
+	bts, err := os.ReadFile("./../../assets/snow-1920.jpg")
 	if err != nil {
 		b.Fatal(err)
 	}
