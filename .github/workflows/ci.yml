@@ -1,0 +1,62 @@
+name: Go
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Download gotestsum
+        uses: giantswarm/install-binary-action@v3.0.0
+        with:
+          binary: "gotestsum"
+          version: "1.12.0"
+          download_url: "https://github.com/gotestyourself/${binary}/releases/download/v${version}/${binary}_${version}_linux_amd64.tar.gz"
+          smoke_test: "${binary} --version"
+          tarball_binary_path: "${binary}"
+
+      - name: Test
+        run: gotestsum --format testname
+
+  go-lint:
+    name: "Go Lint"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+
+      - name: golangci-lint
+        continue-on-error: true
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+
+  tidy:
+    name: go.mod is tidy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          cache: false
+          go-version-file: go.mod
+
+      - name: diff tidy
+        run: go mod tidy -diff

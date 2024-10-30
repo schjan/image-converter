@@ -1,10 +1,12 @@
 package crop
 
 import (
-	"github.com/stretchr/testify/assert"
 	"image"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSimpleCropperImageSize(t *testing.T) {
@@ -61,7 +63,7 @@ func TestSimpleCropperImageSizeTestify(t *testing.T) {
 	result, err := cropper.Crop(img, 400, 300)
 
 	// Assertions
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	width := result.Bounds().Max.X - result.Bounds().Min.X
 	height := result.Bounds().Max.Y - result.Bounds().Min.Y

@@ -2,14 +2,17 @@ package main
 
 import (
 	"flag"
-	"github.com/schjan/image-converter/processing"
-	"github.com/schjan/image-converter/processing/crop"
-	"io/ioutil"
+	"fmt"
 	"log"
+	"os"
 	"path"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
+
+	"github.com/schjan/image-converter/processing"
+	"github.com/schjan/image-converter/processing/crop"
 )
 
 // see explanation of flags with -help flag
@@ -20,14 +23,21 @@ var smartCropper = flag.Bool("smart", false, "if set use smart cropper")
 func main() {
 	flag.Parse()
 
+	if err := mainErr(); err != nil {
+		log.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func mainErr() error {
 	sourceFiles, err := imagesInDir(*sourceDirectory)
 	if err != nil {
-		log.Fatalf("Error reading source directory %v: %v", sourceDirectory, err)
+		return fmt.Errorf("could not read source directory %s: %w", *sourceDirectory, err)
 	}
 
 	// choose which implementation of Cropper to use with -smart flag
 	var cropper crop.Cropper
-	if *smartCropper == true {
+	if *smartCropper {
 		log.Print("This software uses advanced cropping technologies 💥")
 		cropper = crop.NewSmart()
 	} else {
@@ -36,7 +46,7 @@ func main() {
 
 	processor, err := processing.New(cropper, runtime.NumCPU())
 	if err != nil {
-		log.Fatalf("Error creating image processor: %v", err)
+		return fmt.Errorf("could not create image processor: %w", err)
 	}
 
 	for _, srcFilename := range sourceFiles {
@@ -46,27 +56,35 @@ func main() {
 	}
 
 	processor.StopAndWaitFinished()
+
+	return nil
 }
 
 var supportedExtensions = []string{".png", ".jpg", ".jpeg"}
 
 func imagesInDir(directory string) ([]string, error) {
-	dirFiles, err := ioutil.ReadDir(directory)
+	dirFiles, err := os.ReadDir(directory)
+	if err != nil {
+		return nil, fmt.Errorf("could not read source directory: %w", err)
+	}
 
 	var files []string
-
 	for _, fileInfo := range dirFiles {
 		if fileInfo.IsDir() {
 			continue
 		}
 
 		ext := filepath.Ext(fileInfo.Name())
-		for _, supportedExt := range supportedExtensions {
-			if ext == supportedExt {
-				files = append(files, path.Join(directory, fileInfo.Name()))
-			}
+		if slices.Contains(supportedExtensions, ext) {
+			files = append(files, path.Join(directory, fileInfo.Name()))
 		}
+		// Before slices package:
+		//for _, supportedExt := range supportedExtensions {
+		//	 if ext == supportedExt {
+		//		 files = append(files, path.Join(directory, fileInfo.Name()))
+		//	 }
+		//}
 	}
 
-	return files, err
+	return files, nil
 }

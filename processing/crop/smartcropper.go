@@ -1,10 +1,11 @@
 package crop
 
 import (
+	"image"
+
 	"github.com/muesli/smartcrop"
 	"github.com/muesli/smartcrop/nfnt"
 	"github.com/muesli/smartcrop/options"
-	"image"
 )
 
 type smartCropper struct {
