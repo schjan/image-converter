@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path"
@@ -54,9 +55,11 @@ var supportedExtensions = []string{".png", ".jpg", ".jpeg"}
 
 func imagesInDir(directory string) ([]string, error) {
 	dirFiles, err := os.ReadDir(directory)
+	if err != nil {
+		return nil, fmt.Errorf("could not read source directory: %w", err)
+	}
 
 	var files []string
-
 	for _, fileInfo := range dirFiles {
 		if fileInfo.IsDir() {
 			continue
@@ -74,5 +77,5 @@ func imagesInDir(directory string) ([]string, error) {
 		// }
 	}
 
-	return files, err
+	return files, nil
 }
