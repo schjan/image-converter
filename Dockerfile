@@ -1,4 +1,4 @@
-FROM golang:1.13 AS build-env
+FROM golang:1.23 AS build-env
 
 # Add namespace here to resolve /vendor dependencies etc.
 ENV NAMESPACE github.com/schjan/image-converter
